@@ -1,0 +1,37 @@
+id: MTAIReview
+name: MTAIReview
+key: mt_ai_review
+description: >
+  Movable Type記事をGemini APIでAIレビューします。
+  プロンプトを自由に入力して、記事の改善提案や校正、SEO観点の評価などを得られます。
+version: 0.3
+author_link: https://example.com/
+author_name: AI Review Team
+
+applications:
+  cms:
+    methods:
+      ai_review: $MT::Plugin::MTAIReview::ai_review
+    menus:
+      ai_review_menu:
+        label: AIレビュー
+        order: 1000
+        mode: ai_review
+        view: blog
+        permission: administer_blog
+        condition: 1
+    callbacks:
+      template_source.edit_entry: $MT::Plugin::MTAIReview::add_ai_review_button
+      template_param.edit_entry: $MT::Plugin::MTAIReview::add_ai_review_button_param
+      template_source.edit_content_data: $MT::Plugin::MTAIReview::add_ai_review_button
+      template_param.edit_content_data: $MT::Plugin::MTAIReview::add_ai_review_button_param
+
+settings:
+  gemini_api_key:
+    default: ''
+    scope: system
+  custom_prompts:
+    default: ''
+    scope: system
+
+system_config_template: config.tmpl

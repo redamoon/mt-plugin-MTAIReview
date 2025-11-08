@@ -1,0 +1,48 @@
+<mtapp:setting
+  id="gemini_api_key"
+  label="Gemini APIキー"
+  show_hint="1"
+  hint="Google Generative Language APIのキーを入力してください。">
+  <input type="text" class="form-control" name="gemini_api_key" value="<mt:var name="gemini_api_key" encode_html="1">" style="width: 100%;" />
+</mtapp:setting>
+
+<mtapp:setting
+  id="custom_prompts"
+  label="カスタムプロンプト"
+  show_hint="1"
+  hint="AIレビューで使用するプロンプトを設定できます。改行区切りまたはカンマ区切りで複数のプロンプトを入力できます。例：&#10;この文章を自然で読みやすい形に改善してください。&#10;SEOを意識して改善してください。&#10;&#10;または、カンマ区切り：&#10;この文章を自然で読みやすい形に改善してください, SEOを意識して改善してください">
+  <textarea class="form-control" name="custom_prompts" rows="10" style="width: 100%;"><mt:var name="custom_prompts" encode_html="1"></textarea>
+  <p style="margin-top: 5px; font-size: 0.9em; color: #666;">改行区切りまたはカンマ区切りで複数のプロンプトを入力できます。設定したプロンプトは、AIレビュー実行時にボタンとして表示されます。</p>
+  <script type="text/javascript">
+    <mt:if name="custom_prompts">
+      (function() {
+        try {
+          // data属性からプロンプトテキストを取得（HTMLエスケープ済み）
+          const textarea = document.querySelector('textarea[name="custom_prompts"]');
+          if (textarea && textarea.value) {
+            const promptsText = textarea.value;
+            let prompts = [];
+            // カンマが含まれている場合はカンマ区切りとして処理
+            if (promptsText.indexOf(',') !== -1) {
+              prompts = promptsText.split(',').map(p => p.trim()).filter(p => p);
+              // 改行も含まれている場合は、改行も分割文字として使用
+              if (promptsText.indexOf('\n') !== -1 || promptsText.indexOf('\r') !== -1) {
+                prompts = promptsText.split(/[,\r\n]+/).map(p => p.trim()).filter(p => p);
+              }
+            } else {
+              // カンマがない場合は改行区切り
+              prompts = promptsText.split(/[\r\n]+/).map(p => p.trim()).filter(p => p);
+            }
+            if (prompts.length > 0) {
+              window.MTAIReviewPrompts = prompts;
+            }
+          }
+        } catch(e) {
+          console.error('MTAIReview: プロンプト設定の読み込みエラー:', e);
+          window.MTAIReviewPrompts = [];
+        }
+      })();
+    </mt:if>
+  </script>
+</mtapp:setting>
+
