@@ -86,7 +86,7 @@ mt-static/plugins/MTAIReview/
 
 MIT License
 
-詳細は [LICENSE](../../LICENSE) ファイルを参照してください。
+詳細は [LICENSE](LICENSE) ファイルを参照してください。
 
 ## トラブルシューティング
 
@@ -105,5 +105,4 @@ MIT License
 
 - ブラウザのコンソールでエラーを確認してください
 - タイトルまたは本文が入力されているか確認してください
-
 
